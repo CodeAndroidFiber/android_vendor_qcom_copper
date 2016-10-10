@@ -7,56 +7,12 @@
 # Root of Qualcomm Proprietary component tree
 QC_PROP_ROOT := vendor/qcom/proprietary
 
-PRODUCT_LIST := msm7625_surf
-PRODUCT_LIST += msm7625_ffa
-PRODUCT_LIST += msm7627_6x
-PRODUCT_LIST += msm7627_ffa
-PRODUCT_LIST += msm7627_surf
-PRODUCT_LIST += msm7627a
-PRODUCT_LIST += msm8625
-PRODUCT_LIST += msm7630_surf
-PRODUCT_LIST += msm7630_1x
-PRODUCT_LIST += msm7630_fusion
-PRODUCT_LIST += msm8660_surf
-PRODUCT_LIST += qsd8250_surf
-PRODUCT_LIST += qsd8250_ffa
-PRODUCT_LIST += qsd8650a_st1x
-PRODUCT_LIST += msm8660_csfb
-PRODUCT_LIST += msm8960
-PRODUCT_LIST += msm8974
-PRODUCT_LIST += mpq8064
-PRODUCT_LIST += msm8610
-PRODUCT_LIST += msm8226
-PRODUCT_LIST += apq8084
-PRODUCT_LIST += mpq8092
-PRODUCT_LIST += msm_bronze
-PRODUCT_LIST += msm8916
+PRODUCT_LIST := msm8974
 
-MSM7K_PRODUCT_LIST := msm7625_surf
-MSM7K_PRODUCT_LIST += msm7625_ffa
-MSM7K_PRODUCT_LIST += msm7627_6x
-MSM7K_PRODUCT_LIST += msm7627_ffa
-MSM7K_PRODUCT_LIST += msm7627_surf
-MSM7K_PRODUCT_LIST += msm7627a
-MSM7K_PRODUCT_LIST += msm7630_surf
-MSM7K_PRODUCT_LIST += msm7630_1x
-MSM7K_PRODUCT_LIST += msm7630_fusion
+ifneq (, $(filter $(PRODUCT_LIST), $(TARGET_BOARD_PLATFORM)))
+  include device/oneplus/$(TARGET_PRODUCT)/BoardConfig.mk
 
-FOTA_PRODUCT_LIST := msm7627a
-
-ifneq (, $(filter $(PRODUCT_LIST), $(TARGET_PRODUCT)))
-  include device/qcom/$(TARGET_PRODUCT)/BoardConfig.mk
-
-
-  ifeq ($(call is-board-platform,msm8660),true)
-    PREBUILT_BOARD_PLATFORM_DIR := msm8660_surf
-  else ifeq ($(TARGET_PRODUCT),msm8625)
-    PREBUILT_BOARD_PLATFORM_DIR := msm8625
-  else ifeq ($(TARGET_PRODUCT),mpq8064)
-    PREBUILT_BOARD_PLATFORM_DIR := mpq8064
-  else
-    PREBUILT_BOARD_PLATFORM_DIR := $(TARGET_BOARD_PLATFORM)
-  endif
+  PREBUILT_BOARD_PLATFORM_DIR := $(TARGET_BOARD_PLATFORM)
 
   $(call inherit-product-if-exists, $(QC_PROP_ROOT)/common-noship/etc/device-vendor-noship.mk)
   $(call inherit-product-if-exists, $(QC_PROP_ROOT)/prebuilt_grease/target/product/$(PREBUILT_BOARD_PLATFORM_DIR)/prebuilt.mk)
@@ -78,43 +34,7 @@ ifneq (, $(filter $(PRODUCT_LIST), $(TARGET_PRODUCT)))
     VENDOR_TINY_ANDROID_PACKAGES += $(QC_PROP_ROOT)/common/build/remote_api_makefiles
     VENDOR_TINY_ANDROID_PACKAGES += $(QC_PROP_ROOT)/common/build/fusion_api_makefiles
     VENDOR_TINY_ANDROID_PACKAGES += $(QC_PROP_ROOT)/common/config
-
-    ifeq ($(call is-board-platform-in-list,$(MSM7K_PRODUCT_LIST)),true)
-      VENDOR_TINY_ANDROID_PACKAGES += $(QC_PROP_ROOT)/gps
-      VENDOR_TINY_ANDROID_PACKAGES += hardware
-      VENDOR_TINY_ANDROID_PACKAGES += external/wpa_supplicant
-    endif
-
   endif # BUILD_TINY_ANDROID
-endif
-
-ifeq ($(call is-board-platform-in-list,$(FOTA_PRODUCT_LIST)),true)
-  TARGET_FOTA_UPDATE_LIB := libipth libipthlzmadummy
-  TARGET_HAS_FOTA        := true
-endif
-
-# Include the QRD extensions.
-ifeq ($(call is-board-platform-in-list,msm8610 msm8226),true)
-$(call inherit-product-if-exists, vendor/qcom/proprietary/qrdplus/Extension/products.mk)
-endif
-
-# Include the QRD customer extensions for ChinaMobile.
-ifeq ($(call is-board-platform-in-list,msm8610 msm8226),true)
-$(call inherit-product-if-exists, vendor/qcom/proprietary/qrdplus/ChinaMobile/products.mk)
-endif
-
-# Include the QRD customer extensions for ChinaTelecom.
-ifeq ($(call is-board-platform-in-list,msm8610 msm8226),true)
-$(call inherit-product-if-exists, vendor/qcom/proprietary/qrdplus/ChinaTelecom/products.mk)
-endif
-
-# Include the QRD customer extensions for ChinaUnicom.
-ifeq ($(call is-board-platform-in-list,msm8610 msm8226),true)
-$(call inherit-product-if-exists, vendor/qcom/proprietary/qrdplus/ChinaUnicom/products.mk)
-endif
-
-ifeq ($(strip $(TARGET_USES_QCA_NFC)),true)
-$(call inherit-product-if-exists, $(QC_PROP_ROOT)/common/build/nfc/nfc.mk)
 endif
 
 #Add logkit module to build
@@ -2161,5 +2081,3 @@ PRODUCT_PACKAGES_DEBUG += $(WLAN_DBG)
 PRODUCT_PACKAGES_DEBUG += $(QUICKBOOT)
 PRODUCT_PACKAGES_DEBUG += $(LOG_SYSTEM)
 PRODUCT_PACKAGES_DEBUG += $(QCOM_SETTINGS_DBG)
-
-$(call inherit-product-if-exists, vendor/oneplus/prebuilt.mk)
