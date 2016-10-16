@@ -16,8 +16,8 @@
 
 LOCAL_PATH := device/oneplus/onyx
 
-$(call inherit-product, frameworks/native/build/phone-xxhdpi-3072-dalvik-heap.mk)
-$(call inherit-product, frameworks/native/build/phone-xxhdpi-3072-hwui-memory.mk)
+$(call inherit-product, device/oneplus/onyx/configs/phone-xxhdpi-3072-dalvik-heap.mk)
+$(call inherit-product, device/oneplus/onyx/configs/phone-xxhdpi-3072-hwui-memory.mk)
 
 # Overlays
 DEVICE_PACKAGE_OVERLAYS += $(LOCAL_PATH)/overlay
