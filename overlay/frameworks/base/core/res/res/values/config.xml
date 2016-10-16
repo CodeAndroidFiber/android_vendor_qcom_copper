@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+
+    <!-- Doze mode -->
+    <string name="config_dozeComponent">com.android.systemui/com.android.systemui.doze.DozeService</string>
+    <bool name="config_dozeAfterScreenOff">true</bool>
+
+    <!-- Enable doze powersaving -->
+    <bool name="config_enableAutoPowerModes">true</bool>
+
+    <!-- OnePlus Optimizations -->
+    <bool name="config_useDevInputEventForAudioJack">false</bool>
+    <bool name="useImsAlwaysForEmergencyCall">false</bool>
+    <bool name="config_device_volte_available">false</bool>
+    <bool name="config_carrier_volte_tty_supported">false</bool>
+    <bool name="config_enableKeypressOptimization">true</bool>
+    <bool name="config_forceSupportRotationLockToggle">true</bool>
+    <bool name="config_lidControlsSleep">true</bool>
+    <bool name="config_suspendWhenScreenOffDueToProximity">true</bool>
+    <bool name="config_animateScreenLights">true</bool>
+    <bool name="config_wifi_dual_band_support">false</bool>
+
+    <integer-array name="config_autoBrightnessLevels">
+        <item>1</item>
+        <item>350</item>
+        <item>1500</item>
+        <item>10000</item>
+    </integer-array>
+
+    <integer-array name="config_autoBrightnessLcdBacklightValues">
+        <item>5</item>
+        <item>15</item>
+        <item>90</item>
+        <item>200</item>
+        <item>255</item>
+    </integer-array>
+
+    <bool name="config_enableNetworkLocationOverlay" translatable="false">false</bool>
+    <string name="config_networkLocationProviderPackageName" translatable="false">com.qualcomm.location</string>
+    <bool name="config_enableFusedLocationOverlay" translatable="false">false</bool>
+    <string name="config_fusedLocationProviderPackageName" translatable="false">com.qualcomm.location</string>
+
+    <string name="config_comboNetworkLocationProvider" translatable="false">com.qualcomm.location</string>
+
+    <string-array name="config_locationProviderPackageNames">
+        <item>com.google.android.gms</item>
+        <item>com.android.location.fused</item>
+    </string-array>
+
+</resources>

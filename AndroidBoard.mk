@@ -62,7 +62,7 @@ LOCAL_MODULE_PATH  := $(TARGET_OUT_KEYLAYOUT)
 include $(BUILD_PREBUILT)
 
 include $(CLEAR_VARS)
-LOCAL_MODULE       := synaptics_rmi4_i2c.kl
+LOCAL_MODULE       := synaptics-rmi.kl
 LOCAL_MODULE_TAGS  := optional
 LOCAL_MODULE_CLASS := ETC
 LOCAL_SRC_FILES    := rootdir/system/usr/keylayout/$(LOCAL_MODULE)

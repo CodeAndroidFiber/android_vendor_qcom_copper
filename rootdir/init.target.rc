@@ -40,6 +40,18 @@ on init
 on post-fs
     export LD_PRELOAD libNimsWrap.so
 
+    chown system radio /proc/touchpanel/double_tap_enable
+    chmod 0660 /proc/touchpanel/double_tap_enable
+
+    chown root system /proc/touchpanel/camera_enable
+    chmod 0660 /proc/touchpanel/camera_enable
+
+    chown root system /proc/touchpanel/music_enable
+    chmod 0660 /proc/touchpanel/music_enable
+
+    chown root system /proc/touchpanel/flashlight_enable
+    chmod 0660 /proc/touchpanel/flashlight_enable
+
 on fs
     mount_all fstab.qcom
 

@@ -66,6 +66,10 @@ endif
 PRODUCT_DEFAULT_PROPERTY_OVERRIDES += \
     camera2.portability.force_api=1
 
+# CNE
+PRODUCT_PACKAGES += \
+    CNEService
+
 # Dalvik
 PRODUCT_PROPERTY_OVERRIDES += \
     dalvik.vm.heapminfree=2m
@@ -73,6 +77,14 @@ PRODUCT_PROPERTY_OVERRIDES += \
 # Display
 PRODUCT_AAPT_CONFIG := xxhdpi
 PRODUCT_AAPT_PREF_CONFIG := xxhdpi
+
+# GPS
+PRODUCT_PACKAGES += \
+    com.qualcomm.location
+
+# KeyLayout
+PRODUCT_PACKAGES += \
+    synaptics-rmi.kl
 
 # Media
 TARGET_USES_QCOM_BSP := true
@@ -103,6 +115,10 @@ PRODUCT_PACKAGES += \
     battery_monitor \
     battery_shutdown \
     fstab.qcom
+
+# SELinux
+BOARD_SEPOLICY_DIRS += \
+    device/oneplus/onyx/selinux
 
 # Strict operation
 PRODUCT_DEFAULT_PROPERTY_OVERRIDES += \

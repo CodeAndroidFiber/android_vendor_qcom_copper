@@ -1,0 +1,8 @@
+allow wcnss_service self:capability chown;
+allow wcnss_service storage_file:dir search;
+allow wcnss_service storage_file:lnk_file read;
+allow wcnss_service persist_file:file setattr;
+allow wcnss_service mnt_user_file:dir search;
+allow wcnss_service mnt_user_file:lnk_file read;
+allow wcnss_service fuse:dir { search read open };
+allow wcnss_service fuse:file { read append open getattr };
