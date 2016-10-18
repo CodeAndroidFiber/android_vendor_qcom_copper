@@ -110,6 +110,10 @@ PRODUCT_COPY_FILES += \
     frameworks/native/data/etc/android.hardware.sensor.stepdetector.xml:system/etc/permissions/android.hardware.sensor.stepdetector.xml \
     frameworks/native/data/etc/android.software.midi.xml:system/etc/permissions/android.software.midi.xml
 
+# Power
+PRODUCT_PACKAGES += \
+    power.msm8974
+
 # Ramdisk
 PRODUCT_PACKAGES += \
     battery_monitor \
