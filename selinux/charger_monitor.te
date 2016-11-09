@@ -1,0 +1,2 @@
+allow charger_monitor devpts:chr_file { read write };
+allow charger_monitor self:capability { net_admin dac_override };

@@ -138,3 +138,6 @@ ro.prj_name=15055
 
 #multisim
 persist.radio.multisim.config=dsds
+
+# Time services
+persist.timed.enable=true

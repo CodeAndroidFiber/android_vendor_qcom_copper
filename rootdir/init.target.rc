@@ -52,6 +52,18 @@ on post-fs
     chown root system /proc/touchpanel/flashlight_enable
     chmod 0660 /proc/touchpanel/flashlight_enable
 
+    # Torch
+    chown system camera /sys/class/leds/led:flash_torch/brightness
+    chmod 0660 /sys/class/leds/led:flash_torch/brightness
+
+    # Tri-state keys
+    chown root system /proc/tri-state-key/keyCode_top
+    chown root system /proc/tri-state-key/keyCode_middle
+    chown root system /proc/tri-state-key/keyCode_bottom
+    chmod 0660 /proc/tri-state-key/keyCode_top
+    chmod 0660 /proc/tri-state-key/keyCode_middle
+    chmod 0660 /proc/tri-state-key/keyCode_bottom
+
 on fs
     mount_all fstab.qcom
 
@@ -79,10 +91,12 @@ on post-fs-data
     mkdir /tombstones/wcnss 0771 system system
     mkdir /tombstones/dsps 0771 system system
     mkdir /data/usf 0700 system system
+    mkdir /data/camera 0770 media camera
+    mkdir /data/misc/camera 0770 camera camera
 
 on boot
     insmod /system/lib/modules/adsprpc.ko
-# access permission for secure touch
+    # access permission for secure touch
     chmod 0660 /sys/devices/f9923000.i2c/i2c-1/1-004a/secure_touch_enable
     chmod 0440 /sys/devices/f9923000.i2c/i2c-1/1-004a/secure_touch
     chown system drmrpc /sys/devices/f9923000.i2c/i2c-1/1-004a/secure_touch_enable
@@ -91,6 +105,16 @@ on boot
     chmod 0440 /sys/devices/f9924000.i2c/i2c-2/2-004a/secure_touch
     chown system drmrpc /sys/devices/f9924000.i2c/i2c-2/2-004a/secure_touch_enable
     chown system drmrpc /sys/devices/f9924000.i2c/i2c-2/2-004a/secure_touch
+
+    # Charger
+    chown root system /sys/module/qpnp_charger/parameters/charger_monitor
+    chown root system /sys/class/power_supply/battery/input_current_max
+    chown root system /sys/class/power_supply/battery/input_current_trim
+    chown root system /sys/class/power_supply/battery/voltage_min
+    chmod 0644 /sys/module/qpnp_charger/parameters/charger_monitor
+    chmod 0644 /sys/class/power_supply/battery/input_current_max
+    chmod 0644 /sys/class/power_supply/battery/input_current_trim
+    chmod 0644 /sys/class/power_supply/battery/voltage_min
 
 # Allow usb charging to be disabled persistently
 on property:persist.usb.chgdisabled=1
@@ -160,13 +184,13 @@ service thermal-engine /system/vendor/bin/thermal-engine
    socket thermal-recv-passive-client stream 0666 system system
    group root
 
-service security-check1 /sbin/security_boot_check system
-    class core
-    oneshot
-
-service security-check2 /sbin/security_boot_check recovery
-    class core
-    oneshot
+#service security-check1 /sbin/security_boot_check system
+#    class core
+#    oneshot
+#
+#service security-check2 /sbin/security_boot_check recovery
+#    class core
+#    oneshot
 
 service time_daemon /system/bin/time_daemon
    class late_start
@@ -238,18 +262,18 @@ service usf-post-boot /system/bin/sh /system/etc/usf_post_boot.sh
 on property:init.svc.bootanim=stopped
     start usf-post-boot
 
-service imsqmidaemon /system/bin/imsqmidaemon
-    class main
-    user system
-    socket ims_qmid stream 0660 system radio
-    group radio net_raw log qcom_diag
-
-service imsdatadaemon /system/bin/imsdatadaemon
-    class main
-    user system
-    socket ims_datad stream 0660 system radio
-    group system wifi radio inet net_raw log qcom_diag net_admin
-    disabled
+#service imsqmidaemon /system/bin/imsqmidaemon
+#    class main
+#    user system
+#    socket ims_qmid stream 0660 system radio
+#    group radio net_raw log qcom_diag
+#
+#service imsdatadaemon /system/bin/imsdatadaemon
+#    class main
+#    user system
+#    socket ims_datad stream 0660 system radio
+#    group system wifi radio inet net_raw log qcom_diag net_admin
+#    disabled
 
 service wcnss-service /system/bin/wcnss_service
     class main
@@ -257,25 +281,25 @@ service wcnss-service /system/bin/wcnss_service
     group system wifi radio
     oneshot
 
-on property:sys.ims.QMI_DAEMON_STATUS=1
-    start imsdatadaemon
-
-service ims_rtp_daemon /system/bin/ims_rtp_daemon
-   class main
-   user system
-   socket ims_rtpd stream 0660 system radio
-   group radio net_raw diag qcom_diag log inet
-   disabled
-
-service imscmservice /system/bin/imscmservice
-   class main
-   user system
-   group radio net_raw diag qcom_diag log
-   disabled
-
-on property:sys.ims.DATA_DAEMON_STATUS=1
-   start ims_rtp_daemon
-   start imscmservice
+#on property:sys.ims.QMI_DAEMON_STATUS=1
+#    start imsdatadaemon
+#
+#service ims_rtp_daemon /system/bin/ims_rtp_daemon
+#   class main
+#   user system
+#   socket ims_rtpd stream 0660 system radio
+#   group radio net_raw diag qcom_diag log inet
+#   disabled
+#
+#service imscmservice /system/bin/imscmservice
+#   class main
+#   user system
+#   group radio net_raw diag qcom_diag log
+#   disabled
+#
+#on property:sys.ims.DATA_DAEMON_STATUS=1
+#   start ims_rtp_daemon
+#   start imscmservice
 
 service ppd /system/bin/mm-pp-daemon
     class late_start
@@ -290,18 +314,18 @@ on property:init.svc.surfaceflinger=stopped
 on property:init.svc.surfaceflinger=running
     start ppd
 
-service nqs /system/bin/nqs
-    class late_start
-    socket nqs_qsb_comm stream 660 system system
-    user system
-    group drmrpc
-
-service pfm /system/bin/pfm
-    class late_start
-    user system
-    group system drmrpc mount
-
-service ml_daemon /system/bin/ml_daemon
-    class core
-    user root
-    group root
+#service nqs /system/bin/nqs
+#    class late_start
+#    socket nqs_qsb_comm stream 660 system system
+#    user system
+#    group drmrpc
+#
+#service pfm /system/bin/pfm
+#    class late_start
+#    user system
+#    group system drmrpc mount
+#
+#service ml_daemon /system/bin/ml_daemon
+#    class core
+#    user root
+#    group root

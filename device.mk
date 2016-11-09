@@ -82,21 +82,25 @@ PRODUCT_AAPT_PREF_CONFIG := xxhdpi
 PRODUCT_PACKAGES += \
     com.qualcomm.location
 
+# KeyHandler
+PRODUCT_PACKAGES += \
+    com.onyx.keyhandler
+
+PRODUCT_SYSTEM_SERVER_JARS += com.onyx.keyhandler
+
+# never dexopt the keyhandler
+$(call add-product-dex-preopt-module-config,com.onyx.keyhandler,disable)
+
 # KeyLayout
 PRODUCT_PACKAGES += \
     synaptics-rmi.kl
 
 # Media
 TARGET_USES_QCOM_BSP := true
-ifeq ($(TARGET_USES_QCOM_BSP), true)
 TARGET_ENABLE_QC_AV_ENHANCEMENTS := true
-endif
-
-ifeq ($(TARGET_ENABLE_QC_AV_ENHANCEMENTS), true)
-PRODUCT_COPY_FILES += $(LOCAL_PATH)/rootdir/system/etc/media_profiles_8974.xml:system/etc/media_profiles.xml \
-                      $(LOCAL_PATH)/rootdir/system/etc/media_codecs_8974.xml:system/etc/media_codecs.xml \
-                      $(LOCAL_PATH)/rootdir/system/etc/media_codecs_performance_8974.xml:system/etc/media_codecs_performance.xml
-endif
+PRODUCT_COPY_FILES += $(LOCAL_PATH)/rootdir/system/etc/media_profiles.xml:system/etc/media_profiles.xml \
+                      $(LOCAL_PATH)/rootdir/system/etc/media_codecs.xml:system/etc/media_codecs.xml \
+                      $(LOCAL_PATH)/rootdir/system/etc/media_codecs_performance.xml:system/etc/media_codecs_performance.xml
 
 # Permissions
 PRODUCT_COPY_FILES += \
@@ -105,7 +109,6 @@ PRODUCT_COPY_FILES += \
     frameworks/native/data/etc/android.hardware.sensor.gyroscope.xml:system/etc/permissions/android.hardware.sensor.gyroscope.xml \
     frameworks/native/data/etc/android.hardware.sensor.light.xml:system/etc/permissions/android.hardware.sensor.light.xml \
     frameworks/native/data/etc/android.hardware.sensor.proximity.xml:system/etc/permissions/android.hardware.sensor.proximity.xml \
-    frameworks/native/data/etc/android.hardware.sensor.barometer.xml:system/etc/permissions/android.hardware.sensor.barometer.xml \
     frameworks/native/data/etc/android.hardware.sensor.stepcounter.xml:system/etc/permissions/android.hardware.sensor.stepcounter.xml \
     frameworks/native/data/etc/android.hardware.sensor.stepdetector.xml:system/etc/permissions/android.hardware.sensor.stepdetector.xml \
     frameworks/native/data/etc/android.software.midi.xml:system/etc/permissions/android.software.midi.xml
@@ -127,6 +130,10 @@ BOARD_SEPOLICY_DIRS += \
 # Strict operation
 PRODUCT_DEFAULT_PROPERTY_OVERRIDES += \
     persist.sys.strict_op_enable=false
+
+# TimeService
+PRODUCT_PACKAGES += \
+    TimerService
 
 # WiFi
 PRODUCT_COPY_FILES += \
